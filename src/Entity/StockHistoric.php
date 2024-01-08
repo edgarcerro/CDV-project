@@ -18,13 +18,18 @@ class StockHistoric
     private ?users $user_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'stockHistorics')]
-    private ?products $product_id = null;
+    private ?Products $product_id = null;
 
     #[ORM\Column]
     private ?int $stock = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -43,12 +48,12 @@ class StockHistoric
         return $this;
     }
 
-    public function getProductId(): ?products
+    public function getProductId(): ?Products
     {
         return $this->product_id;
     }
 
-    public function setProductId(?products $product_id): static
+    public function setProductId(?Products $product_id): static
     {
         $this->product_id = $product_id;
 

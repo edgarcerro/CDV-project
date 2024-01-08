@@ -20,7 +20,7 @@ class Products
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?categories $category_id = null;
+    private ?Categories $category_id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -31,6 +31,8 @@ class Products
     public function __construct()
     {
         $this->stockHistorics = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+
     }
 
     public function getId(): ?int
@@ -50,12 +52,12 @@ class Products
         return $this;
     }
 
-    public function getCategoryId(): ?categories
+    public function getCategoryId(): ?Categories
     {
         return $this->category_id;
     }
 
-    public function setCategoryId(?categories $category_id): static
+    public function setCategoryId(?Categories $category_id): static
     {
         $this->category_id = $category_id;
 
