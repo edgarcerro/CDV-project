@@ -90,4 +90,9 @@ class Categories
 
         return $this;
     }
+
+    public function __toString()
+{
+    return $this->getName(); // Asumiendo que tienes un método getName() en la entidad Categories
+}
 }

@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Event\StockChangeEvent;
+
 
 #[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
@@ -27,6 +29,9 @@ class Products
 
     #[ORM\OneToMany(mappedBy: 'product_id', targetEntity: StockHistoric::class)]
     private Collection $stockHistorics;
+
+    #[ORM\Column]
+    private ?int $stock = null;
 
     public function __construct()
     {
@@ -105,4 +110,19 @@ class Products
 
         return $this;
     }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): self
+{
+   
+    $this->stock = $stock;
+
+    return $this;
+}
+
+    
 }
