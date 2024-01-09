@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Products;
+
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -12,11 +13,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class ProductsCrudController extends AbstractCrudController
 {
+    private $adminUrlGenerator;
+
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    {
+        $this->adminUrlGenerator = $adminUrlGenerator;
+    }
+
     public static function getEntityFqcn(): string
     {
         return Products::class;
@@ -56,14 +63,14 @@ class ProductsCrudController extends AbstractCrudController
             return $action->setIcon('fa fa-trash'); 
         });
 
-        $viewStockHistory = Action::new('viewStockHistory', 'Ver Historial')
-            ->linkToCrudAction('stockHistory')
-            ->setIcon('fa fa-eye');
-
-        $actions->add(Crud::PAGE_INDEX, $viewStockHistory);
+        $actions->add(Crud::PAGE_INDEX, Action::new('viewStockHistory', 'Ver Historial')
+            ->linkToUrl(function () {
+                return $this->adminUrlGenerator->setController(StockHistoricCrudController::class)->generateUrl();
+            })
+            ->setIcon('fa fa-eye')
+        );
 
         return $actions;
     }
 
-   
 }
